@@ -1,0 +1,2032 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled1.ipynb",
+      "version": "0.3.2",
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/vansh258/EDA-on-fifa-players/blob/master/House%20price%20kaggle\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "V6mE-CZKQPOC",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "qGXV3Gt8QVIx",
+        "colab_type": "code",
+        "colab": {
+          "resources": {
+            "http://localhost:8080/nbextensions/google.colab/files.js": {
+              "data": "Ly8gQ29weXJpZ2h0IDIwMTcgR29vZ2xlIExMQwovLwovLyBMaWNlbnNlZCB1bmRlciB0aGUgQXBhY2hlIExpY2Vuc2UsIFZlcnNpb24gMi4wICh0aGUgIkxpY2Vuc2UiKTsKLy8geW91IG1heSBub3QgdXNlIHRoaXMgZmlsZSBleGNlcHQgaW4gY29tcGxpYW5jZSB3aXRoIHRoZSBMaWNlbnNlLgovLyBZb3UgbWF5IG9idGFpbiBhIGNvcHkgb2YgdGhlIExpY2Vuc2UgYXQKLy8KLy8gICAgICBodHRwOi8vd3d3LmFwYWNoZS5vcmcvbGljZW5zZXMvTElDRU5TRS0yLjAKLy8KLy8gVW5sZXNzIHJlcXVpcmVkIGJ5IGFwcGxpY2FibGUgbGF3IG9yIGFncmVlZCB0byBpbiB3cml0aW5nLCBzb2Z0d2FyZQovLyBkaXN0cmlidXRlZCB1bmRlciB0aGUgTGljZW5zZSBpcyBkaXN0cmlidXRlZCBvbiBhbiAiQVMgSVMiIEJBU0lTLAovLyBXSVRIT1VUIFdBUlJBTlRJRVMgT1IgQ09ORElUSU9OUyBPRiBBTlkgS0lORCwgZWl0aGVyIGV4cHJlc3Mgb3IgaW1wbGllZC4KLy8gU2VlIHRoZSBMaWNlbnNlIGZvciB0aGUgc3BlY2lmaWMgbGFuZ3VhZ2UgZ292ZXJuaW5nIHBlcm1pc3Npb25zIGFuZAovLyBsaW1pdGF0aW9ucyB1bmRlciB0aGUgTGljZW5zZS4KCi8qKgogKiBAZmlsZW92ZXJ2aWV3IEhlbHBlcnMgZm9yIGdvb2dsZS5jb2xhYiBQeXRob24gbW9kdWxlLgogKi8KKGZ1bmN0aW9uKHNjb3BlKSB7CmZ1bmN0aW9uIHNwYW4odGV4dCwgc3R5bGVBdHRyaWJ1dGVzID0ge30pIHsKICBjb25zdCBlbGVtZW50ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnc3BhbicpOwogIGVsZW1lbnQudGV4dENvbnRlbnQgPSB0ZXh0OwogIGZvciAoY29uc3Qga2V5IG9mIE9iamVjdC5rZXlzKHN0eWxlQXR0cmlidXRlcykpIHsKICAgIGVsZW1lbnQuc3R5bGVba2V5XSA9IHN0eWxlQXR0cmlidXRlc1trZXldOwogIH0KICByZXR1cm4gZWxlbWVudDsKfQoKLy8gTWF4IG51bWJlciBvZiBieXRlcyB3aGljaCB3aWxsIGJlIHVwbG9hZGVkIGF0IGEgdGltZS4KY29uc3QgTUFYX1BBWUxPQURfU0laRSA9IDEwMCAqIDEwMjQ7Ci8vIE1heCBhbW91bnQgb2YgdGltZSB0byBibG9jayB3YWl0aW5nIGZvciB0aGUgdXNlci4KY29uc3QgRklMRV9DSEFOR0VfVElNRU9VVF9NUyA9IDMwICogMTAwMDsKCmZ1bmN0aW9uIF91cGxvYWRGaWxlcyhpbnB1dElkLCBvdXRwdXRJZCkgewogIGNvbnN0IHN0ZXBzID0gdXBsb2FkRmlsZXNTdGVwKGlucHV0SWQsIG91dHB1dElkKTsKICBjb25zdCBvdXRwdXRFbGVtZW50ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQob3V0cHV0SWQpOwogIC8vIENhY2hlIHN0ZXBzIG9uIHRoZSBvdXRwdXRFbGVtZW50IHRvIG1ha2UgaXQgYXZhaWxhYmxlIGZvciB0aGUgbmV4dCBjYWxsCiAgLy8gdG8gdXBsb2FkRmlsZXNDb250aW51ZSBmcm9tIFB5dGhvbi4KICBvdXRwdXRFbGVtZW50LnN0ZXBzID0gc3RlcHM7CgogIHJldHVybiBfdXBsb2FkRmlsZXNDb250aW51ZShvdXRwdXRJZCk7Cn0KCi8vIFRoaXMgaXMgcm91Z2hseSBhbiBhc3luYyBnZW5lcmF0b3IgKG5vdCBzdXBwb3J0ZWQgaW4gdGhlIGJyb3dzZXIgeWV0KSwKLy8gd2hlcmUgdGhlcmUgYXJlIG11bHRpcGxlIGFzeW5jaHJvbm91cyBzdGVwcyBhbmQgdGhlIFB5dGhvbiBzaWRlIGlzIGdvaW5nCi8vIHRvIHBvbGwgZm9yIGNvbXBsZXRpb24gb2YgZWFjaCBzdGVwLgovLyBUaGlzIHVzZXMgYSBQcm9taXNlIHRvIGJsb2NrIHRoZSBweXRob24gc2lkZSBvbiBjb21wbGV0aW9uIG9mIGVhY2ggc3RlcCwKLy8gdGhlbiBwYXNzZXMgdGhlIHJlc3VsdCBvZiB0aGUgcHJldmlvdXMgc3RlcCBhcyB0aGUgaW5wdXQgdG8gdGhlIG5leHQgc3RlcC4KZnVuY3Rpb24gX3VwbG9hZEZpbGVzQ29udGludWUob3V0cHV0SWQpIHsKICBjb25zdCBvdXRwdXRFbGVtZW50ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQob3V0cHV0SWQpOwogIGNvbnN0IHN0ZXBzID0gb3V0cHV0RWxlbWVudC5zdGVwczsKCiAgY29uc3QgbmV4dCA9IHN0ZXBzLm5leHQob3V0cHV0RWxlbWVudC5sYXN0UHJvbWlzZVZhbHVlKTsKICByZXR1cm4gUHJvbWlzZS5yZXNvbHZlKG5leHQudmFsdWUucHJvbWlzZSkudGhlbigodmFsdWUpID0+IHsKICAgIC8vIENhY2hlIHRoZSBsYXN0IHByb21pc2UgdmFsdWUgdG8gbWFrZSBpdCBhdmFpbGFibGUgdG8gdGhlIG5leHQKICAgIC8vIHN0ZXAgb2YgdGhlIGdlbmVyYXRvci4KICAgIG91dHB1dEVsZW1lbnQubGFzdFByb21pc2VWYWx1ZSA9IHZhbHVlOwogICAgcmV0dXJuIG5leHQudmFsdWUucmVzcG9uc2U7CiAgfSk7Cn0KCi8qKgogKiBHZW5lcmF0b3IgZnVuY3Rpb24gd2hpY2ggaXMgY2FsbGVkIGJldHdlZW4gZWFjaCBhc3luYyBzdGVwIG9mIHRoZSB1cGxvYWQKICogcHJvY2Vzcy4KICogQHBhcmFtIHtzdHJpbmd9IGlucHV0SWQgRWxlbWVudCBJRCBvZiB0aGUgaW5wdXQgZmlsZSBwaWNrZXIgZWxlbWVudC4KICogQHBhcmFtIHtzdHJpbmd9IG91dHB1dElkIEVsZW1lbnQgSUQgb2YgdGhlIG91dHB1dCBkaXNwbGF5LgogKiBAcmV0dXJuIHshSXRlcmFibGU8IU9iamVjdD59IEl0ZXJhYmxlIG9mIG5leHQgc3RlcHMuCiAqLwpmdW5jdGlvbiogdXBsb2FkRmlsZXNTdGVwKGlucHV0SWQsIG91dHB1dElkKSB7CiAgY29uc3QgaW5wdXRFbGVtZW50ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoaW5wdXRJZCk7CiAgaW5wdXRFbGVtZW50LmRpc2FibGVkID0gZmFsc2U7CgogIGNvbnN0IG91dHB1dEVsZW1lbnQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChvdXRwdXRJZCk7CiAgb3V0cHV0RWxlbWVudC5pbm5lckhUTUwgPSAnJzsKCiAgY29uc3QgcGlja2VkUHJvbWlzZSA9IG5ldyBQcm9taXNlKChyZXNvbHZlKSA9PiB7CiAgICBpbnB1dEVsZW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignY2hhbmdlJywgKGUpID0+IHsKICAgICAgcmVzb2x2ZShlLnRhcmdldC5maWxlcyk7CiAgICB9KTsKICB9KTsKCiAgY29uc3QgY2FuY2VsID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnYnV0dG9uJyk7CiAgaW5wdXRFbGVtZW50LnBhcmVudEVsZW1lbnQuYXBwZW5kQ2hpbGQoY2FuY2VsKTsKICBjYW5jZWwudGV4dENvbnRlbnQgPSAnQ2FuY2VsIHVwbG9hZCc7CiAgY29uc3QgY2FuY2VsUHJvbWlzZSA9IG5ldyBQcm9taXNlKChyZXNvbHZlKSA9PiB7CiAgICBjYW5jZWwub25jbGljayA9ICgpID0+IHsKICAgICAgcmVzb2x2ZShudWxsKTsKICAgIH07CiAgfSk7CgogIC8vIENhbmNlbCB1cGxvYWQgaWYgdXNlciBoYXNuJ3QgcGlja2VkIGFueXRoaW5nIGluIHRpbWVvdXQuCiAgY29uc3QgdGltZW91dFByb21pc2UgPSBuZXcgUHJvbWlzZSgocmVzb2x2ZSkgPT4gewogICAgc2V0VGltZW91dCgoKSA9PiB7CiAgICAgIHJlc29sdmUobnVsbCk7CiAgICB9LCBGSUxFX0NIQU5HRV9USU1FT1VUX01TKTsKICB9KTsKCiAgLy8gV2FpdCBmb3IgdGhlIHVzZXIgdG8gcGljayB0aGUgZmlsZXMuCiAgY29uc3QgZmlsZXMgPSB5aWVsZCB7CiAgICBwcm9taXNlOiBQcm9taXNlLnJhY2UoW3BpY2tlZFByb21pc2UsIHRpbWVvdXRQcm9taXNlLCBjYW5jZWxQcm9taXNlXSksCiAgICByZXNwb25zZTogewogICAgICBhY3Rpb246ICdzdGFydGluZycsCiAgICB9CiAgfTsKCiAgaWYgKCFmaWxlcykgewogICAgcmV0dXJuIHsKICAgICAgcmVzcG9uc2U6IHsKICAgICAgICBhY3Rpb246ICdjb21wbGV0ZScsCiAgICAgIH0KICAgIH07CiAgfQoKICBjYW5jZWwucmVtb3ZlKCk7CgogIC8vIERpc2FibGUgdGhlIGlucHV0IGVsZW1lbnQgc2luY2UgZnVydGhlciBwaWNrcyBhcmUgbm90IGFsbG93ZWQuCiAgaW5wdXRFbGVtZW50LmRpc2FibGVkID0gdHJ1ZTsKCiAgZm9yIChjb25zdCBmaWxlIG9mIGZpbGVzKSB7CiAgICBjb25zdCBsaSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2xpJyk7CiAgICBsaS5hcHBlbmQoc3BhbihmaWxlLm5hbWUsIHtmb250V2VpZ2h0OiAnYm9sZCd9KSk7CiAgICBsaS5hcHBlbmQoc3BhbigKICAgICAgICBgKCR7ZmlsZS50eXBlIHx8ICduL2EnfSkgLSAke2ZpbGUuc2l6ZX0gYnl0ZXMsIGAgKwogICAgICAgIGBsYXN0IG1vZGlmaWVkOiAkewogICAgICAgICAgICBmaWxlLmxhc3RNb2RpZmllZERhdGUgPyBmaWxlLmxhc3RNb2RpZmllZERhdGUudG9Mb2NhbGVEYXRlU3RyaW5nKCkgOgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnbi9hJ30gLSBgKSk7CiAgICBjb25zdCBwZXJjZW50ID0gc3BhbignMCUgZG9uZScpOwogICAgbGkuYXBwZW5kQ2hpbGQocGVyY2VudCk7CgogICAgb3V0cHV0RWxlbWVudC5hcHBlbmRDaGlsZChsaSk7CgogICAgY29uc3QgZmlsZURhdGFQcm9taXNlID0gbmV3IFByb21pc2UoKHJlc29sdmUpID0+IHsKICAgICAgY29uc3QgcmVhZGVyID0gbmV3IEZpbGVSZWFkZXIoKTsKICAgICAgcmVhZGVyLm9ubG9hZCA9IChlKSA9PiB7CiAgICAgICAgcmVzb2x2ZShlLnRhcmdldC5yZXN1bHQpOwogICAgICB9OwogICAgICByZWFkZXIucmVhZEFzQXJyYXlCdWZmZXIoZmlsZSk7CiAgICB9KTsKICAgIC8vIFdhaXQgZm9yIHRoZSBkYXRhIHRvIGJlIHJlYWR5LgogICAgbGV0IGZpbGVEYXRhID0geWllbGQgewogICAgICBwcm9taXNlOiBmaWxlRGF0YVByb21pc2UsCiAgICAgIHJlc3BvbnNlOiB7CiAgICAgICAgYWN0aW9uOiAnY29udGludWUnLAogICAgICB9CiAgICB9OwoKICAgIC8vIFVzZSBhIGNodW5rZWQgc2VuZGluZyB0byBhdm9pZCBtZXNzYWdlIHNpemUgbGltaXRzLiBTZWUgYi82MjExNTY2MC4KICAgIGxldCBwb3NpdGlvbiA9IDA7CiAgICB3aGlsZSAocG9zaXRpb24gPCBmaWxlRGF0YS5ieXRlTGVuZ3RoKSB7CiAgICAgIGNvbnN0IGxlbmd0aCA9IE1hdGgubWluKGZpbGVEYXRhLmJ5dGVMZW5ndGggLSBwb3NpdGlvbiwgTUFYX1BBWUxPQURfU0laRSk7CiAgICAgIGNvbnN0IGNodW5rID0gbmV3IFVpbnQ4QXJyYXkoZmlsZURhdGEsIHBvc2l0aW9uLCBsZW5ndGgpOwogICAgICBwb3NpdGlvbiArPSBsZW5ndGg7CgogICAgICBjb25zdCBiYXNlNjQgPSBidG9hKFN0cmluZy5mcm9tQ2hhckNvZGUuYXBwbHkobnVsbCwgY2h1bmspKTsKICAgICAgeWllbGQgewogICAgICAgIHJlc3BvbnNlOiB7CiAgICAgICAgICBhY3Rpb246ICdhcHBlbmQnLAogICAgICAgICAgZmlsZTogZmlsZS5uYW1lLAogICAgICAgICAgZGF0YTogYmFzZTY0LAogICAgICAgIH0sCiAgICAgIH07CiAgICAgIHBlcmNlbnQudGV4dENvbnRlbnQgPQogICAgICAgICAgYCR7TWF0aC5yb3VuZCgocG9zaXRpb24gLyBmaWxlRGF0YS5ieXRlTGVuZ3RoKSAqIDEwMCl9JSBkb25lYDsKICAgIH0KICB9CgogIC8vIEFsbCBkb25lLgogIHlpZWxkIHsKICAgIHJlc3BvbnNlOiB7CiAgICAgIGFjdGlvbjogJ2NvbXBsZXRlJywKICAgIH0KICB9Owp9CgpzY29wZS5nb29nbGUgPSBzY29wZS5nb29nbGUgfHwge307CnNjb3BlLmdvb2dsZS5jb2xhYiA9IHNjb3BlLmdvb2dsZS5jb2xhYiB8fCB7fTsKc2NvcGUuZ29vZ2xlLmNvbGFiLl9maWxlcyA9IHsKICBfdXBsb2FkRmlsZXMsCiAgX3VwbG9hZEZpbGVzQ29udGludWUsCn07Cn0pKHNlbGYpOwo=",
+              "ok": true,
+              "headers": [
+                [
+                  "content-type",
+                  "application/javascript"
+                ]
+              ],
+              "status": 200,
+              "status_text": ""
+            }
+          },
+          "base_uri": "https://localhost:8080/",
+          "height": 108
+        },
+        "outputId": "13802efc-17f8-4d1e-ab7e-61896aa9077b"
+      },
+      "source": [
+        "\n",
+        "from google.colab import files\n",
+        "uploaded=files.upload()"
+      ],
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "\n",
+              "     <input type=\"file\" id=\"files-0ce2f546-7c48-4f8c-9b1c-d90f005e0141\" name=\"files[]\" multiple disabled />\n",
+              "     <output id=\"result-0ce2f546-7c48-4f8c-9b1c-d90f005e0141\">\n",
+              "      Upload widget is only available when the cell has been executed in the\n",
+              "      current browser session. Please rerun this cell to enable.\n",
+              "      </output>\n",
+              "      <script src=\"/nbextensions/google.colab/files.js\"></script> "
+            ],
+            "text/plain": [
+              "<IPython.core.display.HTML object>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          }
+        },
+        {
+          "output_type": "stream",
+          "text": [
+            "Saving train (2).csv to train (2).csv\n",
+            "Saving test (2).csv to test (2).csv\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ua0BsUIMQ3hR",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import pandas as pd"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "HSVarDMGRL_K",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train=pd.read_csv('train (2).csv')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PEqHK6u6RvVR",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "test=pd.read_csv('test (2).csv')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "foQERxJ9R-4x",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.LotFrontage.fillna(69, inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "RTdHL_UzTCdJ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.MasVnrType.fillna('None', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "uKWfBFDITGhI",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 317
+        },
+        "outputId": "0766b491-9473-4e88-949e-4d49feec2222"
+      },
+      "source": [
+        "train.describe()"
+      ],
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Id</th>\n",
+              "      <th>MSSubClass</th>\n",
+              "      <th>LotFrontage</th>\n",
+              "      <th>LotArea</th>\n",
+              "      <th>OverallQual</th>\n",
+              "      <th>OverallCond</th>\n",
+              "      <th>YearBuilt</th>\n",
+              "      <th>YearRemodAdd</th>\n",
+              "      <th>MasVnrArea</th>\n",
+              "      <th>BsmtFinSF1</th>\n",
+              "      <th>BsmtFinSF2</th>\n",
+              "      <th>BsmtUnfSF</th>\n",
+              "      <th>TotalBsmtSF</th>\n",
+              "      <th>1stFlrSF</th>\n",
+              "      <th>2ndFlrSF</th>\n",
+              "      <th>LowQualFinSF</th>\n",
+              "      <th>GrLivArea</th>\n",
+              "      <th>BsmtFullBath</th>\n",
+              "      <th>BsmtHalfBath</th>\n",
+              "      <th>FullBath</th>\n",
+              "      <th>HalfBath</th>\n",
+              "      <th>BedroomAbvGr</th>\n",
+              "      <th>KitchenAbvGr</th>\n",
+              "      <th>TotRmsAbvGrd</th>\n",
+              "      <th>Fireplaces</th>\n",
+              "      <th>GarageYrBlt</th>\n",
+              "      <th>GarageCars</th>\n",
+              "      <th>GarageArea</th>\n",
+              "      <th>WoodDeckSF</th>\n",
+              "      <th>OpenPorchSF</th>\n",
+              "      <th>EnclosedPorch</th>\n",
+              "      <th>3SsnPorch</th>\n",
+              "      <th>ScreenPorch</th>\n",
+              "      <th>PoolArea</th>\n",
+              "      <th>MiscVal</th>\n",
+              "      <th>MoSold</th>\n",
+              "      <th>YrSold</th>\n",
+              "      <th>SalePrice</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>count</th>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1452.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1379.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>1460.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>mean</th>\n",
+              "      <td>730.500000</td>\n",
+              "      <td>56.897260</td>\n",
+              "      <td>69.863699</td>\n",
+              "      <td>10516.828082</td>\n",
+              "      <td>6.099315</td>\n",
+              "      <td>5.575342</td>\n",
+              "      <td>1971.267808</td>\n",
+              "      <td>1984.865753</td>\n",
+              "      <td>103.685262</td>\n",
+              "      <td>443.639726</td>\n",
+              "      <td>46.549315</td>\n",
+              "      <td>567.240411</td>\n",
+              "      <td>1057.429452</td>\n",
+              "      <td>1162.626712</td>\n",
+              "      <td>346.992466</td>\n",
+              "      <td>5.844521</td>\n",
+              "      <td>1515.463699</td>\n",
+              "      <td>0.425342</td>\n",
+              "      <td>0.057534</td>\n",
+              "      <td>1.565068</td>\n",
+              "      <td>0.382877</td>\n",
+              "      <td>2.866438</td>\n",
+              "      <td>1.046575</td>\n",
+              "      <td>6.517808</td>\n",
+              "      <td>0.613014</td>\n",
+              "      <td>1978.506164</td>\n",
+              "      <td>1.767123</td>\n",
+              "      <td>472.980137</td>\n",
+              "      <td>94.244521</td>\n",
+              "      <td>46.660274</td>\n",
+              "      <td>21.954110</td>\n",
+              "      <td>3.409589</td>\n",
+              "      <td>15.060959</td>\n",
+              "      <td>2.758904</td>\n",
+              "      <td>43.489041</td>\n",
+              "      <td>6.321918</td>\n",
+              "      <td>2007.815753</td>\n",
+              "      <td>180921.195890</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>std</th>\n",
+              "      <td>421.610009</td>\n",
+              "      <td>42.300571</td>\n",
+              "      <td>22.027677</td>\n",
+              "      <td>9981.264932</td>\n",
+              "      <td>1.382997</td>\n",
+              "      <td>1.112799</td>\n",
+              "      <td>30.202904</td>\n",
+              "      <td>20.645407</td>\n",
+              "      <td>181.066207</td>\n",
+              "      <td>456.098091</td>\n",
+              "      <td>161.319273</td>\n",
+              "      <td>441.866955</td>\n",
+              "      <td>438.705324</td>\n",
+              "      <td>386.587738</td>\n",
+              "      <td>436.528436</td>\n",
+              "      <td>48.623081</td>\n",
+              "      <td>525.480383</td>\n",
+              "      <td>0.518911</td>\n",
+              "      <td>0.238753</td>\n",
+              "      <td>0.550916</td>\n",
+              "      <td>0.502885</td>\n",
+              "      <td>0.815778</td>\n",
+              "      <td>0.220338</td>\n",
+              "      <td>1.625393</td>\n",
+              "      <td>0.644666</td>\n",
+              "      <td>24.689725</td>\n",
+              "      <td>0.747315</td>\n",
+              "      <td>213.804841</td>\n",
+              "      <td>125.338794</td>\n",
+              "      <td>66.256028</td>\n",
+              "      <td>61.119149</td>\n",
+              "      <td>29.317331</td>\n",
+              "      <td>55.757415</td>\n",
+              "      <td>40.177307</td>\n",
+              "      <td>496.123024</td>\n",
+              "      <td>2.703626</td>\n",
+              "      <td>1.328095</td>\n",
+              "      <td>79442.502883</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>min</th>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>20.000000</td>\n",
+              "      <td>21.000000</td>\n",
+              "      <td>1300.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>1872.000000</td>\n",
+              "      <td>1950.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>334.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>334.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1900.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>2006.000000</td>\n",
+              "      <td>34900.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>25%</th>\n",
+              "      <td>365.750000</td>\n",
+              "      <td>20.000000</td>\n",
+              "      <td>60.000000</td>\n",
+              "      <td>7553.500000</td>\n",
+              "      <td>5.000000</td>\n",
+              "      <td>5.000000</td>\n",
+              "      <td>1954.000000</td>\n",
+              "      <td>1967.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>223.000000</td>\n",
+              "      <td>795.750000</td>\n",
+              "      <td>882.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1129.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>5.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1961.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>334.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>5.000000</td>\n",
+              "      <td>2007.000000</td>\n",
+              "      <td>129975.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>50%</th>\n",
+              "      <td>730.500000</td>\n",
+              "      <td>50.000000</td>\n",
+              "      <td>69.000000</td>\n",
+              "      <td>9478.500000</td>\n",
+              "      <td>6.000000</td>\n",
+              "      <td>5.000000</td>\n",
+              "      <td>1973.000000</td>\n",
+              "      <td>1994.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>383.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>477.500000</td>\n",
+              "      <td>991.500000</td>\n",
+              "      <td>1087.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1464.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>6.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>1980.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>480.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>25.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>6.000000</td>\n",
+              "      <td>2008.000000</td>\n",
+              "      <td>163000.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>75%</th>\n",
+              "      <td>1095.250000</td>\n",
+              "      <td>70.000000</td>\n",
+              "      <td>79.000000</td>\n",
+              "      <td>11601.500000</td>\n",
+              "      <td>7.000000</td>\n",
+              "      <td>6.000000</td>\n",
+              "      <td>2000.000000</td>\n",
+              "      <td>2004.000000</td>\n",
+              "      <td>166.000000</td>\n",
+              "      <td>712.250000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>808.000000</td>\n",
+              "      <td>1298.250000</td>\n",
+              "      <td>1391.250000</td>\n",
+              "      <td>728.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1776.750000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>7.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>2002.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>576.000000</td>\n",
+              "      <td>168.000000</td>\n",
+              "      <td>68.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>8.000000</td>\n",
+              "      <td>2009.000000</td>\n",
+              "      <td>214000.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>max</th>\n",
+              "      <td>1460.000000</td>\n",
+              "      <td>190.000000</td>\n",
+              "      <td>313.000000</td>\n",
+              "      <td>215245.000000</td>\n",
+              "      <td>10.000000</td>\n",
+              "      <td>9.000000</td>\n",
+              "      <td>2010.000000</td>\n",
+              "      <td>2010.000000</td>\n",
+              "      <td>1600.000000</td>\n",
+              "      <td>5644.000000</td>\n",
+              "      <td>1474.000000</td>\n",
+              "      <td>2336.000000</td>\n",
+              "      <td>6110.000000</td>\n",
+              "      <td>4692.000000</td>\n",
+              "      <td>2065.000000</td>\n",
+              "      <td>572.000000</td>\n",
+              "      <td>5642.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>8.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>14.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>2010.000000</td>\n",
+              "      <td>4.000000</td>\n",
+              "      <td>1418.000000</td>\n",
+              "      <td>857.000000</td>\n",
+              "      <td>547.000000</td>\n",
+              "      <td>552.000000</td>\n",
+              "      <td>508.000000</td>\n",
+              "      <td>480.000000</td>\n",
+              "      <td>738.000000</td>\n",
+              "      <td>15500.000000</td>\n",
+              "      <td>12.000000</td>\n",
+              "      <td>2010.000000</td>\n",
+              "      <td>755000.000000</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                Id   MSSubClass  ...       YrSold      SalePrice\n",
+              "count  1460.000000  1460.000000  ...  1460.000000    1460.000000\n",
+              "mean    730.500000    56.897260  ...  2007.815753  180921.195890\n",
+              "std     421.610009    42.300571  ...     1.328095   79442.502883\n",
+              "min       1.000000    20.000000  ...  2006.000000   34900.000000\n",
+              "25%     365.750000    20.000000  ...  2007.000000  129975.000000\n",
+              "50%     730.500000    50.000000  ...  2008.000000  163000.000000\n",
+              "75%    1095.250000    70.000000  ...  2009.000000  214000.000000\n",
+              "max    1460.000000   190.000000  ...  2010.000000  755000.000000\n",
+              "\n",
+              "[8 rows x 38 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 11
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dT4i-fDcTqOS",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1479
+        },
+        "outputId": "5eef7c33-4448-44d3-e6cb-f7b9a94dba16"
+      },
+      "source": [
+        "train.info()"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 1460 entries, 0 to 1459\n",
+            "Data columns (total 81 columns):\n",
+            "Id               1460 non-null int64\n",
+            "MSSubClass       1460 non-null int64\n",
+            "MSZoning         1460 non-null object\n",
+            "LotFrontage      1460 non-null float64\n",
+            "LotArea          1460 non-null int64\n",
+            "Street           1460 non-null object\n",
+            "Alley            91 non-null object\n",
+            "LotShape         1460 non-null object\n",
+            "LandContour      1460 non-null object\n",
+            "Utilities        1460 non-null object\n",
+            "LotConfig        1460 non-null object\n",
+            "LandSlope        1460 non-null object\n",
+            "Neighborhood     1460 non-null object\n",
+            "Condition1       1460 non-null object\n",
+            "Condition2       1460 non-null object\n",
+            "BldgType         1460 non-null object\n",
+            "HouseStyle       1460 non-null object\n",
+            "OverallQual      1460 non-null int64\n",
+            "OverallCond      1460 non-null int64\n",
+            "YearBuilt        1460 non-null int64\n",
+            "YearRemodAdd     1460 non-null int64\n",
+            "RoofStyle        1460 non-null object\n",
+            "RoofMatl         1460 non-null object\n",
+            "Exterior1st      1460 non-null object\n",
+            "Exterior2nd      1460 non-null object\n",
+            "MasVnrType       1460 non-null object\n",
+            "MasVnrArea       1452 non-null float64\n",
+            "ExterQual        1460 non-null object\n",
+            "ExterCond        1460 non-null object\n",
+            "Foundation       1460 non-null object\n",
+            "BsmtQual         1423 non-null object\n",
+            "BsmtCond         1423 non-null object\n",
+            "BsmtExposure     1422 non-null object\n",
+            "BsmtFinType1     1423 non-null object\n",
+            "BsmtFinSF1       1460 non-null int64\n",
+            "BsmtFinType2     1422 non-null object\n",
+            "BsmtFinSF2       1460 non-null int64\n",
+            "BsmtUnfSF        1460 non-null int64\n",
+            "TotalBsmtSF      1460 non-null int64\n",
+            "Heating          1460 non-null object\n",
+            "HeatingQC        1460 non-null object\n",
+            "CentralAir       1460 non-null object\n",
+            "Electrical       1459 non-null object\n",
+            "1stFlrSF         1460 non-null int64\n",
+            "2ndFlrSF         1460 non-null int64\n",
+            "LowQualFinSF     1460 non-null int64\n",
+            "GrLivArea        1460 non-null int64\n",
+            "BsmtFullBath     1460 non-null int64\n",
+            "BsmtHalfBath     1460 non-null int64\n",
+            "FullBath         1460 non-null int64\n",
+            "HalfBath         1460 non-null int64\n",
+            "BedroomAbvGr     1460 non-null int64\n",
+            "KitchenAbvGr     1460 non-null int64\n",
+            "KitchenQual      1460 non-null object\n",
+            "TotRmsAbvGrd     1460 non-null int64\n",
+            "Functional       1460 non-null object\n",
+            "Fireplaces       1460 non-null int64\n",
+            "FireplaceQu      770 non-null object\n",
+            "GarageType       1379 non-null object\n",
+            "GarageYrBlt      1379 non-null float64\n",
+            "GarageFinish     1379 non-null object\n",
+            "GarageCars       1460 non-null int64\n",
+            "GarageArea       1460 non-null int64\n",
+            "GarageQual       1379 non-null object\n",
+            "GarageCond       1379 non-null object\n",
+            "PavedDrive       1460 non-null object\n",
+            "WoodDeckSF       1460 non-null int64\n",
+            "OpenPorchSF      1460 non-null int64\n",
+            "EnclosedPorch    1460 non-null int64\n",
+            "3SsnPorch        1460 non-null int64\n",
+            "ScreenPorch      1460 non-null int64\n",
+            "PoolArea         1460 non-null int64\n",
+            "PoolQC           7 non-null object\n",
+            "Fence            281 non-null object\n",
+            "MiscFeature      54 non-null object\n",
+            "MiscVal          1460 non-null int64\n",
+            "MoSold           1460 non-null int64\n",
+            "YrSold           1460 non-null int64\n",
+            "SaleType         1460 non-null object\n",
+            "SaleCondition    1460 non-null object\n",
+            "SalePrice        1460 non-null int64\n",
+            "dtypes: float64(3), int64(35), object(43)\n",
+            "memory usage: 924.0+ KB\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "4MiqMtpNTsEH",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.MasVnrArea.fillna(0 , inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "MJh6WpHeT5na",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 119
+        },
+        "outputId": "cb607474-827f-4399-f8c8-d0c55705fb74"
+      },
+      "source": [
+        "train.BsmtQual.value_counts(dropna=False)"
+      ],
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "TA     649\n",
+              "Gd     618\n",
+              "Ex     121\n",
+              "NaN     37\n",
+              "Fa      35\n",
+              "Name: BsmtQual, dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 15
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "JFc0WQ9XT_gt",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.BsmtQual.fillna('TA', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "SjV_ONo0UErn",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.BsmtCond.fillna('TA', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "43dDjF5gUKD3",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.BsmtExposure.fillna('No', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "wXB9cvK9UOca",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.BsmtFinType1.fillna('Unf', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "rPmIkukbUSMY",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.BsmtFinType2.fillna('Unf',inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "B_2zcGekUU0L",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.Electrical.fillna('SBrkr',inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "W7zdoydnUXmd",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.FireplaceQu.fillna('Gd', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "_XcFuUjRUa9Q",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.GarageYrBlt.fillna(value=2005, inplace= True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "CRlabQTEUdrd",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.GarageType.fillna(value='Attchd', inplace= True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "LMXCOevOUgHY",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.GarageFinish.fillna('Unf', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ZadL32liUijh",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.GarageQual.fillna('TA',inplace= True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "FVNIBSRcUmq_",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train.GarageCond.fillna('TA', inplace=True)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "O0UUP06-Uozg",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1479
+        },
+        "outputId": "fbc1275b-18b5-48b9-b57b-eb5434a3f5f9"
+      },
+      "source": [
+        "train.info()"
+      ],
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 1460 entries, 0 to 1459\n",
+            "Data columns (total 81 columns):\n",
+            "Id               1460 non-null int64\n",
+            "MSSubClass       1460 non-null int64\n",
+            "MSZoning         1460 non-null object\n",
+            "LotFrontage      1460 non-null float64\n",
+            "LotArea          1460 non-null int64\n",
+            "Street           1460 non-null object\n",
+            "Alley            91 non-null object\n",
+            "LotShape         1460 non-null object\n",
+            "LandContour      1460 non-null object\n",
+            "Utilities        1460 non-null object\n",
+            "LotConfig        1460 non-null object\n",
+            "LandSlope        1460 non-null object\n",
+            "Neighborhood     1460 non-null object\n",
+            "Condition1       1460 non-null object\n",
+            "Condition2       1460 non-null object\n",
+            "BldgType         1460 non-null object\n",
+            "HouseStyle       1460 non-null object\n",
+            "OverallQual      1460 non-null int64\n",
+            "OverallCond      1460 non-null int64\n",
+            "YearBuilt        1460 non-null int64\n",
+            "YearRemodAdd     1460 non-null int64\n",
+            "RoofStyle        1460 non-null object\n",
+            "RoofMatl         1460 non-null object\n",
+            "Exterior1st      1460 non-null object\n",
+            "Exterior2nd      1460 non-null object\n",
+            "MasVnrType       1460 non-null object\n",
+            "MasVnrArea       1460 non-null float64\n",
+            "ExterQual        1460 non-null object\n",
+            "ExterCond        1460 non-null object\n",
+            "Foundation       1460 non-null object\n",
+            "BsmtQual         1460 non-null object\n",
+            "BsmtCond         1460 non-null object\n",
+            "BsmtExposure     1460 non-null object\n",
+            "BsmtFinType1     1460 non-null object\n",
+            "BsmtFinSF1       1460 non-null int64\n",
+            "BsmtFinType2     1460 non-null object\n",
+            "BsmtFinSF2       1460 non-null int64\n",
+            "BsmtUnfSF        1460 non-null int64\n",
+            "TotalBsmtSF      1460 non-null int64\n",
+            "Heating          1460 non-null object\n",
+            "HeatingQC        1460 non-null object\n",
+            "CentralAir       1460 non-null object\n",
+            "Electrical       1460 non-null object\n",
+            "1stFlrSF         1460 non-null int64\n",
+            "2ndFlrSF         1460 non-null int64\n",
+            "LowQualFinSF     1460 non-null int64\n",
+            "GrLivArea        1460 non-null int64\n",
+            "BsmtFullBath     1460 non-null int64\n",
+            "BsmtHalfBath     1460 non-null int64\n",
+            "FullBath         1460 non-null int64\n",
+            "HalfBath         1460 non-null int64\n",
+            "BedroomAbvGr     1460 non-null int64\n",
+            "KitchenAbvGr     1460 non-null int64\n",
+            "KitchenQual      1460 non-null object\n",
+            "TotRmsAbvGrd     1460 non-null int64\n",
+            "Functional       1460 non-null object\n",
+            "Fireplaces       1460 non-null int64\n",
+            "FireplaceQu      1460 non-null object\n",
+            "GarageType       1460 non-null object\n",
+            "GarageYrBlt      1460 non-null float64\n",
+            "GarageFinish     1460 non-null object\n",
+            "GarageCars       1460 non-null int64\n",
+            "GarageArea       1460 non-null int64\n",
+            "GarageQual       1460 non-null object\n",
+            "GarageCond       1460 non-null object\n",
+            "PavedDrive       1460 non-null object\n",
+            "WoodDeckSF       1460 non-null int64\n",
+            "OpenPorchSF      1460 non-null int64\n",
+            "EnclosedPorch    1460 non-null int64\n",
+            "3SsnPorch        1460 non-null int64\n",
+            "ScreenPorch      1460 non-null int64\n",
+            "PoolArea         1460 non-null int64\n",
+            "PoolQC           7 non-null object\n",
+            "Fence            281 non-null object\n",
+            "MiscFeature      54 non-null object\n",
+            "MiscVal          1460 non-null int64\n",
+            "MoSold           1460 non-null int64\n",
+            "YrSold           1460 non-null int64\n",
+            "SaleType         1460 non-null object\n",
+            "SaleCondition    1460 non-null object\n",
+            "SalePrice        1460 non-null int64\n",
+            "dtypes: float64(3), int64(35), object(43)\n",
+            "memory usage: 924.0+ KB\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "72roZq4OUvaP",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "newtrain=train.drop(['PoolQC' ,'Alley','Fence', 'MiscFeature'], axis=1)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "UftHxcECU1tT",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train_new=newtrain.drop(['Id', 'YearBuilt', 'YearRemodAdd', 'GarageYrBlt', 'YrSold', 'MoSold' ], axis=1)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "-1QXf4BhU5dR",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1309
+        },
+        "outputId": "5eb37ed6-b342-4844-9eb6-9051181f0744"
+      },
+      "source": [
+        "train_new.info()"
+      ],
+      "execution_count": 31,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 1460 entries, 0 to 1459\n",
+            "Data columns (total 71 columns):\n",
+            "MSSubClass       1460 non-null int64\n",
+            "MSZoning         1460 non-null object\n",
+            "LotFrontage      1460 non-null float64\n",
+            "LotArea          1460 non-null int64\n",
+            "Street           1460 non-null object\n",
+            "LotShape         1460 non-null object\n",
+            "LandContour      1460 non-null object\n",
+            "Utilities        1460 non-null object\n",
+            "LotConfig        1460 non-null object\n",
+            "LandSlope        1460 non-null object\n",
+            "Neighborhood     1460 non-null object\n",
+            "Condition1       1460 non-null object\n",
+            "Condition2       1460 non-null object\n",
+            "BldgType         1460 non-null object\n",
+            "HouseStyle       1460 non-null object\n",
+            "OverallQual      1460 non-null int64\n",
+            "OverallCond      1460 non-null int64\n",
+            "RoofStyle        1460 non-null object\n",
+            "RoofMatl         1460 non-null object\n",
+            "Exterior1st      1460 non-null object\n",
+            "Exterior2nd      1460 non-null object\n",
+            "MasVnrType       1460 non-null object\n",
+            "MasVnrArea       1460 non-null float64\n",
+            "ExterQual        1460 non-null object\n",
+            "ExterCond        1460 non-null object\n",
+            "Foundation       1460 non-null object\n",
+            "BsmtQual         1460 non-null object\n",
+            "BsmtCond         1460 non-null object\n",
+            "BsmtExposure     1460 non-null object\n",
+            "BsmtFinType1     1460 non-null object\n",
+            "BsmtFinSF1       1460 non-null int64\n",
+            "BsmtFinType2     1460 non-null object\n",
+            "BsmtFinSF2       1460 non-null int64\n",
+            "BsmtUnfSF        1460 non-null int64\n",
+            "TotalBsmtSF      1460 non-null int64\n",
+            "Heating          1460 non-null object\n",
+            "HeatingQC        1460 non-null object\n",
+            "CentralAir       1460 non-null object\n",
+            "Electrical       1460 non-null object\n",
+            "1stFlrSF         1460 non-null int64\n",
+            "2ndFlrSF         1460 non-null int64\n",
+            "LowQualFinSF     1460 non-null int64\n",
+            "GrLivArea        1460 non-null int64\n",
+            "BsmtFullBath     1460 non-null int64\n",
+            "BsmtHalfBath     1460 non-null int64\n",
+            "FullBath         1460 non-null int64\n",
+            "HalfBath         1460 non-null int64\n",
+            "BedroomAbvGr     1460 non-null int64\n",
+            "KitchenAbvGr     1460 non-null int64\n",
+            "KitchenQual      1460 non-null object\n",
+            "TotRmsAbvGrd     1460 non-null int64\n",
+            "Functional       1460 non-null object\n",
+            "Fireplaces       1460 non-null int64\n",
+            "FireplaceQu      1460 non-null object\n",
+            "GarageType       1460 non-null object\n",
+            "GarageFinish     1460 non-null object\n",
+            "GarageCars       1460 non-null int64\n",
+            "GarageArea       1460 non-null int64\n",
+            "GarageQual       1460 non-null object\n",
+            "GarageCond       1460 non-null object\n",
+            "PavedDrive       1460 non-null object\n",
+            "WoodDeckSF       1460 non-null int64\n",
+            "OpenPorchSF      1460 non-null int64\n",
+            "EnclosedPorch    1460 non-null int64\n",
+            "3SsnPorch        1460 non-null int64\n",
+            "ScreenPorch      1460 non-null int64\n",
+            "PoolArea         1460 non-null int64\n",
+            "MiscVal          1460 non-null int64\n",
+            "SaleType         1460 non-null object\n",
+            "SaleCondition    1460 non-null object\n",
+            "SalePrice        1460 non-null int64\n",
+            "dtypes: float64(2), int64(30), object(39)\n",
+            "memory usage: 809.9+ KB\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "XL-3tLYYVFXR",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "dummytrain=pd.get_dummies(train_new.drop('SalePrice',axis=1))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Df73E-uLVR6i",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "cefc2d05-9e22-41e9-b8fd-367900514556"
+      },
+      "source": [
+        "dummytrain.shape"
+      ],
+      "execution_count": 42,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(1460, 270)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 42
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5SpAPX1dVeKg",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from sklearn.preprocessing import StandardScaler\n",
+        "sc=StandardScaler()"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "jZJBtLpRVT9g",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "scaled_train=pd.DataFrame(sc.fit_transform(dummytrain), columns=dummytrain.columns)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "oKO22vz7VctM",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "r_6SxB3HV9_h",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 270
+        },
+        "outputId": "39b34d37-527c-4197-fbe9-aac4fd945375"
+      },
+      "source": [
+        "scaled_train.head()"
+      ],
+      "execution_count": 39,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>MSSubClass</th>\n",
+              "      <th>LotFrontage</th>\n",
+              "      <th>LotArea</th>\n",
+              "      <th>OverallQual</th>\n",
+              "      <th>OverallCond</th>\n",
+              "      <th>MasVnrArea</th>\n",
+              "      <th>BsmtFinSF1</th>\n",
+              "      <th>BsmtFinSF2</th>\n",
+              "      <th>BsmtUnfSF</th>\n",
+              "      <th>TotalBsmtSF</th>\n",
+              "      <th>1stFlrSF</th>\n",
+              "      <th>2ndFlrSF</th>\n",
+              "      <th>LowQualFinSF</th>\n",
+              "      <th>GrLivArea</th>\n",
+              "      <th>BsmtFullBath</th>\n",
+              "      <th>BsmtHalfBath</th>\n",
+              "      <th>FullBath</th>\n",
+              "      <th>HalfBath</th>\n",
+              "      <th>BedroomAbvGr</th>\n",
+              "      <th>KitchenAbvGr</th>\n",
+              "      <th>TotRmsAbvGrd</th>\n",
+              "      <th>Fireplaces</th>\n",
+              "      <th>GarageCars</th>\n",
+              "      <th>GarageArea</th>\n",
+              "      <th>WoodDeckSF</th>\n",
+              "      <th>OpenPorchSF</th>\n",
+              "      <th>EnclosedPorch</th>\n",
+              "      <th>3SsnPorch</th>\n",
+              "      <th>ScreenPorch</th>\n",
+              "      <th>PoolArea</th>\n",
+              "      <th>MiscVal</th>\n",
+              "      <th>SalePrice</th>\n",
+              "      <th>MSZoning_C (all)</th>\n",
+              "      <th>MSZoning_FV</th>\n",
+              "      <th>MSZoning_RH</th>\n",
+              "      <th>MSZoning_RL</th>\n",
+              "      <th>MSZoning_RM</th>\n",
+              "      <th>Street_Grvl</th>\n",
+              "      <th>Street_Pave</th>\n",
+              "      <th>LotShape_IR1</th>\n",
+              "      <th>...</th>\n",
+              "      <th>FireplaceQu_Gd</th>\n",
+              "      <th>FireplaceQu_Po</th>\n",
+              "      <th>FireplaceQu_TA</th>\n",
+              "      <th>GarageType_2Types</th>\n",
+              "      <th>GarageType_Attchd</th>\n",
+              "      <th>GarageType_Basment</th>\n",
+              "      <th>GarageType_BuiltIn</th>\n",
+              "      <th>GarageType_CarPort</th>\n",
+              "      <th>GarageType_Detchd</th>\n",
+              "      <th>GarageFinish_Fin</th>\n",
+              "      <th>GarageFinish_RFn</th>\n",
+              "      <th>GarageFinish_Unf</th>\n",
+              "      <th>GarageQual_Ex</th>\n",
+              "      <th>GarageQual_Fa</th>\n",
+              "      <th>GarageQual_Gd</th>\n",
+              "      <th>GarageQual_Po</th>\n",
+              "      <th>GarageQual_TA</th>\n",
+              "      <th>GarageCond_Ex</th>\n",
+              "      <th>GarageCond_Fa</th>\n",
+              "      <th>GarageCond_Gd</th>\n",
+              "      <th>GarageCond_Po</th>\n",
+              "      <th>GarageCond_TA</th>\n",
+              "      <th>PavedDrive_N</th>\n",
+              "      <th>PavedDrive_P</th>\n",
+              "      <th>PavedDrive_Y</th>\n",
+              "      <th>SaleType_COD</th>\n",
+              "      <th>SaleType_CWD</th>\n",
+              "      <th>SaleType_Con</th>\n",
+              "      <th>SaleType_ConLD</th>\n",
+              "      <th>SaleType_ConLI</th>\n",
+              "      <th>SaleType_ConLw</th>\n",
+              "      <th>SaleType_New</th>\n",
+              "      <th>SaleType_Oth</th>\n",
+              "      <th>SaleType_WD</th>\n",
+              "      <th>SaleCondition_Abnorml</th>\n",
+              "      <th>SaleCondition_AdjLand</th>\n",
+              "      <th>SaleCondition_Alloca</th>\n",
+              "      <th>SaleCondition_Family</th>\n",
+              "      <th>SaleCondition_Normal</th>\n",
+              "      <th>SaleCondition_Partial</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>0.073375</td>\n",
+              "      <td>-0.220875</td>\n",
+              "      <td>-0.207142</td>\n",
+              "      <td>0.651479</td>\n",
+              "      <td>-0.517200</td>\n",
+              "      <td>0.514104</td>\n",
+              "      <td>0.575425</td>\n",
+              "      <td>-0.288653</td>\n",
+              "      <td>-0.944591</td>\n",
+              "      <td>-0.459303</td>\n",
+              "      <td>-0.793434</td>\n",
+              "      <td>1.161852</td>\n",
+              "      <td>-0.120242</td>\n",
+              "      <td>0.370333</td>\n",
+              "      <td>1.107810</td>\n",
+              "      <td>-0.241061</td>\n",
+              "      <td>0.789741</td>\n",
+              "      <td>1.227585</td>\n",
+              "      <td>0.163779</td>\n",
+              "      <td>-0.211454</td>\n",
+              "      <td>0.912210</td>\n",
+              "      <td>-0.951226</td>\n",
+              "      <td>0.311725</td>\n",
+              "      <td>0.351000</td>\n",
+              "      <td>-0.752176</td>\n",
+              "      <td>0.216503</td>\n",
+              "      <td>-0.359325</td>\n",
+              "      <td>-0.116339</td>\n",
+              "      <td>-0.270208</td>\n",
+              "      <td>-0.068692</td>\n",
+              "      <td>-0.087688</td>\n",
+              "      <td>0.347273</td>\n",
+              "      <td>-0.083045</td>\n",
+              "      <td>-0.215859</td>\n",
+              "      <td>-0.105263</td>\n",
+              "      <td>0.518133</td>\n",
+              "      <td>-0.418955</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.064238</td>\n",
+              "      <td>-0.704203</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0.603727</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>-0.522385</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.731591</td>\n",
+              "      <td>-0.114827</td>\n",
+              "      <td>-0.253259</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.600559</td>\n",
+              "      <td>-0.56364</td>\n",
+              "      <td>1.568348</td>\n",
+              "      <td>-0.941438</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>-0.184376</td>\n",
+              "      <td>-0.098397</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.221022</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.156721</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.069409</td>\n",
+              "      <td>0.194085</td>\n",
+              "      <td>-0.256307</td>\n",
+              "      <td>-0.144841</td>\n",
+              "      <td>0.299253</td>\n",
+              "      <td>-0.1742</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.301962</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.390293</td>\n",
+              "      <td>-0.272616</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.091035</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>0.467651</td>\n",
+              "      <td>-0.305995</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>-0.872563</td>\n",
+              "      <td>0.460320</td>\n",
+              "      <td>-0.091886</td>\n",
+              "      <td>-0.071836</td>\n",
+              "      <td>2.179628</td>\n",
+              "      <td>-0.570750</td>\n",
+              "      <td>1.171992</td>\n",
+              "      <td>-0.288653</td>\n",
+              "      <td>-0.641228</td>\n",
+              "      <td>0.466465</td>\n",
+              "      <td>0.257140</td>\n",
+              "      <td>-0.795163</td>\n",
+              "      <td>-0.120242</td>\n",
+              "      <td>-0.482512</td>\n",
+              "      <td>-0.819964</td>\n",
+              "      <td>3.948809</td>\n",
+              "      <td>0.789741</td>\n",
+              "      <td>-0.761621</td>\n",
+              "      <td>0.163779</td>\n",
+              "      <td>-0.211454</td>\n",
+              "      <td>-0.318683</td>\n",
+              "      <td>0.600495</td>\n",
+              "      <td>0.311725</td>\n",
+              "      <td>-0.060731</td>\n",
+              "      <td>1.626195</td>\n",
+              "      <td>-0.704483</td>\n",
+              "      <td>-0.359325</td>\n",
+              "      <td>-0.116339</td>\n",
+              "      <td>-0.270208</td>\n",
+              "      <td>-0.068692</td>\n",
+              "      <td>-0.087688</td>\n",
+              "      <td>0.007288</td>\n",
+              "      <td>-0.083045</td>\n",
+              "      <td>-0.215859</td>\n",
+              "      <td>-0.105263</td>\n",
+              "      <td>0.518133</td>\n",
+              "      <td>-0.418955</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.064238</td>\n",
+              "      <td>-0.704203</td>\n",
+              "      <td>...</td>\n",
+              "      <td>-1.656379</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>1.914298</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.731591</td>\n",
+              "      <td>-0.114827</td>\n",
+              "      <td>-0.253259</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.600559</td>\n",
+              "      <td>-0.56364</td>\n",
+              "      <td>1.568348</td>\n",
+              "      <td>-0.941438</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>-0.184376</td>\n",
+              "      <td>-0.098397</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.221022</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.156721</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.069409</td>\n",
+              "      <td>0.194085</td>\n",
+              "      <td>-0.256307</td>\n",
+              "      <td>-0.144841</td>\n",
+              "      <td>0.299253</td>\n",
+              "      <td>-0.1742</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.301962</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.390293</td>\n",
+              "      <td>-0.272616</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.091035</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>0.467651</td>\n",
+              "      <td>-0.305995</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>0.073375</td>\n",
+              "      <td>-0.084636</td>\n",
+              "      <td>0.073480</td>\n",
+              "      <td>0.651479</td>\n",
+              "      <td>-0.517200</td>\n",
+              "      <td>0.325915</td>\n",
+              "      <td>0.092907</td>\n",
+              "      <td>-0.288653</td>\n",
+              "      <td>-0.301643</td>\n",
+              "      <td>-0.313369</td>\n",
+              "      <td>-0.627826</td>\n",
+              "      <td>1.189351</td>\n",
+              "      <td>-0.120242</td>\n",
+              "      <td>0.515013</td>\n",
+              "      <td>1.107810</td>\n",
+              "      <td>-0.241061</td>\n",
+              "      <td>0.789741</td>\n",
+              "      <td>1.227585</td>\n",
+              "      <td>0.163779</td>\n",
+              "      <td>-0.211454</td>\n",
+              "      <td>-0.318683</td>\n",
+              "      <td>0.600495</td>\n",
+              "      <td>0.311725</td>\n",
+              "      <td>0.631726</td>\n",
+              "      <td>-0.752176</td>\n",
+              "      <td>-0.070361</td>\n",
+              "      <td>-0.359325</td>\n",
+              "      <td>-0.116339</td>\n",
+              "      <td>-0.270208</td>\n",
+              "      <td>-0.068692</td>\n",
+              "      <td>-0.087688</td>\n",
+              "      <td>0.536154</td>\n",
+              "      <td>-0.083045</td>\n",
+              "      <td>-0.215859</td>\n",
+              "      <td>-0.105263</td>\n",
+              "      <td>0.518133</td>\n",
+              "      <td>-0.418955</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.064238</td>\n",
+              "      <td>1.420045</td>\n",
+              "      <td>...</td>\n",
+              "      <td>-1.656379</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>1.914298</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.731591</td>\n",
+              "      <td>-0.114827</td>\n",
+              "      <td>-0.253259</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.600559</td>\n",
+              "      <td>-0.56364</td>\n",
+              "      <td>1.568348</td>\n",
+              "      <td>-0.941438</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>-0.184376</td>\n",
+              "      <td>-0.098397</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.221022</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.156721</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.069409</td>\n",
+              "      <td>0.194085</td>\n",
+              "      <td>-0.256307</td>\n",
+              "      <td>-0.144841</td>\n",
+              "      <td>0.299253</td>\n",
+              "      <td>-0.1742</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.301962</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.390293</td>\n",
+              "      <td>-0.272616</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.091035</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>0.467651</td>\n",
+              "      <td>-0.305995</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>0.309859</td>\n",
+              "      <td>-0.447940</td>\n",
+              "      <td>-0.096897</td>\n",
+              "      <td>0.651479</td>\n",
+              "      <td>-0.517200</td>\n",
+              "      <td>-0.570750</td>\n",
+              "      <td>-0.499274</td>\n",
+              "      <td>-0.288653</td>\n",
+              "      <td>-0.061670</td>\n",
+              "      <td>-0.687324</td>\n",
+              "      <td>-0.521734</td>\n",
+              "      <td>0.937276</td>\n",
+              "      <td>-0.120242</td>\n",
+              "      <td>0.383659</td>\n",
+              "      <td>1.107810</td>\n",
+              "      <td>-0.241061</td>\n",
+              "      <td>-1.026041</td>\n",
+              "      <td>-0.761621</td>\n",
+              "      <td>0.163779</td>\n",
+              "      <td>-0.211454</td>\n",
+              "      <td>0.296763</td>\n",
+              "      <td>0.600495</td>\n",
+              "      <td>1.650307</td>\n",
+              "      <td>0.790804</td>\n",
+              "      <td>-0.752176</td>\n",
+              "      <td>-0.176048</td>\n",
+              "      <td>4.092524</td>\n",
+              "      <td>-0.116339</td>\n",
+              "      <td>-0.270208</td>\n",
+              "      <td>-0.068692</td>\n",
+              "      <td>-0.087688</td>\n",
+              "      <td>-0.515281</td>\n",
+              "      <td>-0.083045</td>\n",
+              "      <td>-0.215859</td>\n",
+              "      <td>-0.105263</td>\n",
+              "      <td>0.518133</td>\n",
+              "      <td>-0.418955</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.064238</td>\n",
+              "      <td>1.420045</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0.603727</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>-0.522385</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>-1.366883</td>\n",
+              "      <td>-0.114827</td>\n",
+              "      <td>-0.253259</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>1.665116</td>\n",
+              "      <td>-0.56364</td>\n",
+              "      <td>-0.637614</td>\n",
+              "      <td>1.062205</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>-0.184376</td>\n",
+              "      <td>-0.098397</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.221022</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.156721</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.069409</td>\n",
+              "      <td>0.194085</td>\n",
+              "      <td>-0.256307</td>\n",
+              "      <td>-0.144841</td>\n",
+              "      <td>0.299253</td>\n",
+              "      <td>-0.1742</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.301962</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.390293</td>\n",
+              "      <td>3.668167</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.091035</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>-2.138345</td>\n",
+              "      <td>-0.305995</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>0.073375</td>\n",
+              "      <td>0.641972</td>\n",
+              "      <td>0.375148</td>\n",
+              "      <td>1.374795</td>\n",
+              "      <td>-0.517200</td>\n",
+              "      <td>1.366489</td>\n",
+              "      <td>0.463568</td>\n",
+              "      <td>-0.288653</td>\n",
+              "      <td>-0.174865</td>\n",
+              "      <td>0.199680</td>\n",
+              "      <td>-0.045611</td>\n",
+              "      <td>1.617877</td>\n",
+              "      <td>-0.120242</td>\n",
+              "      <td>1.299326</td>\n",
+              "      <td>1.107810</td>\n",
+              "      <td>-0.241061</td>\n",
+              "      <td>0.789741</td>\n",
+              "      <td>1.227585</td>\n",
+              "      <td>1.390023</td>\n",
+              "      <td>-0.211454</td>\n",
+              "      <td>1.527656</td>\n",
+              "      <td>0.600495</td>\n",
+              "      <td>1.650307</td>\n",
+              "      <td>1.698485</td>\n",
+              "      <td>0.780197</td>\n",
+              "      <td>0.563760</td>\n",
+              "      <td>-0.359325</td>\n",
+              "      <td>-0.116339</td>\n",
+              "      <td>-0.270208</td>\n",
+              "      <td>-0.068692</td>\n",
+              "      <td>-0.087688</td>\n",
+              "      <td>0.869843</td>\n",
+              "      <td>-0.083045</td>\n",
+              "      <td>-0.215859</td>\n",
+              "      <td>-0.105263</td>\n",
+              "      <td>0.518133</td>\n",
+              "      <td>-0.418955</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.064238</td>\n",
+              "      <td>1.420045</td>\n",
+              "      <td>...</td>\n",
+              "      <td>-1.656379</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>1.914298</td>\n",
+              "      <td>-0.064238</td>\n",
+              "      <td>0.731591</td>\n",
+              "      <td>-0.114827</td>\n",
+              "      <td>-0.253259</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.600559</td>\n",
+              "      <td>-0.56364</td>\n",
+              "      <td>1.568348</td>\n",
+              "      <td>-0.941438</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>-0.184376</td>\n",
+              "      <td>-0.098397</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.221022</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.156721</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.069409</td>\n",
+              "      <td>0.194085</td>\n",
+              "      <td>-0.256307</td>\n",
+              "      <td>-0.144841</td>\n",
+              "      <td>0.299253</td>\n",
+              "      <td>-0.1742</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.037037</td>\n",
+              "      <td>-0.078757</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.058621</td>\n",
+              "      <td>-0.301962</td>\n",
+              "      <td>-0.045376</td>\n",
+              "      <td>0.390293</td>\n",
+              "      <td>-0.272616</td>\n",
+              "      <td>-0.052414</td>\n",
+              "      <td>-0.091035</td>\n",
+              "      <td>-0.117851</td>\n",
+              "      <td>0.467651</td>\n",
+              "      <td>-0.305995</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>5 rows × 271 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   MSSubClass  LotFrontage  ...  SaleCondition_Normal  SaleCondition_Partial\n",
+              "0    0.073375    -0.220875  ...              0.467651              -0.305995\n",
+              "1   -0.872563     0.460320  ...              0.467651              -0.305995\n",
+              "2    0.073375    -0.084636  ...              0.467651              -0.305995\n",
+              "3    0.309859    -0.447940  ...             -2.138345              -0.305995\n",
+              "4    0.073375     0.641972  ...              0.467651              -0.305995\n",
+              "\n",
+              "[5 rows x 271 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 39
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hHL6MfWvWAMI",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from sklearn.tree import DecisionTreeRegressor\n",
+        "dt=DecisionTreeRegressor(max_depth=6)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "rc-Twld1Wteq",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 102
+        },
+        "outputId": "c197a409-73e8-480b-f41d-6dbec174f3fd"
+      },
+      "source": [
+        "dt.fit(scaled_train,train['SalePrice'])"
+      ],
+      "execution_count": 50,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "DecisionTreeRegressor(criterion='mse', max_depth=6, max_features=None,\n",
+              "                      max_leaf_nodes=None, min_impurity_decrease=0.0,\n",
+              "                      min_impurity_split=None, min_samples_leaf=1,\n",
+              "                      min_samples_split=2, min_weight_fraction_leaf=0.0,\n",
+              "                      presort=False, random_state=None, splitter='best')"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 50
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "iOwWBREDW66R",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "prediction=dt.predict(scaled_train)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "w38TMMtCXqHX",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import numpy as np"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "xPnDEVKQXwVL",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "def rmse(predictions, targets):\n",
+        "    return np.sqrt(((predictions - targets) ** 2).mean())\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "MQ56s0oxXyoG",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "ab79cc85-e8da-4b4c-e8dc-7fc362afe6ac"
+      },
+      "source": [
+        "rmse(prediction,train['SalePrice'])"
+      ],
+      "execution_count": 54,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "24668.151482343703"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 54
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5IKZcNiHX5PJ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "dt=DecisionTreeRegressor(max_depth=5)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "_fjys0rxYJz5",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 102
+        },
+        "outputId": "5cc2e204-016c-4026-99ec-e080d3cd402d"
+      },
+      "source": [
+        "dt.fit(scaled_train,train['SalePrice'])"
+      ],
+      "execution_count": 56,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "DecisionTreeRegressor(criterion='mse', max_depth=5, max_features=None,\n",
+              "                      max_leaf_nodes=None, min_impurity_decrease=0.0,\n",
+              "                      min_impurity_split=None, min_samples_leaf=1,\n",
+              "                      min_samples_split=2, min_weight_fraction_leaf=0.0,\n",
+              "                      presort=False, random_state=None, splitter='best')"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 56
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "YsrBdm7DYMSP",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "prediction=dt.predict(scaled_train)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "UHGsvbuEYOpt",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "5a028097-cf87-4c99-d26e-e309a89c6a7b"
+      },
+      "source": [
+        "rmse(prediction,train['SalePrice'])"
+      ],
+      "execution_count": 58,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "29516.85375752022"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 58
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Al36SBbPYQ7R",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "dt=DecisionTreeRegressor(max_depth=7)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "aQXMg9v6YbFM",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    }
+  ]
+}
